@@ -40,10 +40,10 @@ def setup():
 
     w = width//cols
     h = height//rows
-    for lis in grid:
-        for x in lis:
-            print(x, end="")
-        print()
+    # for lis in grid:
+    #     for x in lis:
+    #         print(x, end="")
+    #     print()
     start = grid[0][0]
     start.g=0
     start.f=0
@@ -81,7 +81,7 @@ def draw():
     if len(openSet) > 0:
         # print("while")
         current = min(openSet, key=lambda node: node.f)
-        print("curr:",current)
+        # print("curr:",current)
 
         if current == end:
             no_loop()
@@ -91,20 +91,20 @@ def draw():
             closedSet.append(current)
             neighbor = getneighbors(current)
 
-            print("neighbor:",end=" ")
-            for spots in neighbor:
-                print(spots,end=" ")
-            print()
+            # print("neighbor:",end=" ")
+            # for spots in neighbor:
+            #     print(spots,end=" ")
+            # print()
 
             for i in range(len(neighbor)):
                 # print("n",neighbor[i].i,neighbor[i].j)
                 if neighbor[i] in closedSet:
-                    print("continue")
                     continue
+                    # print("continue")
                 tempG = current.g+1
-                print(f"tg{tempG} ng{neighbor[i].g}")
+                # print(f"tg{tempG} ng{neighbor[i].g}")
                 if tempG < neighbor[i].g:
-                    print("if1")
+                    # print("if1")
                     neighbor[i].prev = current
                     neighbor[i].g = tempG
                     neighbor[i].f = neighbor[i].g + heuristic(neighbor[i], end)
