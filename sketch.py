@@ -2,7 +2,16 @@ from p5 import *
 
 w = 0
 h = 0
+width = 400
+height = 400
+cols = 25
+rows = 25
 
+openSet = []
+closedSet = []
+# path = []
+start = None
+end = None
 
 class Spot:
     def __init__(self, i, j):
@@ -20,40 +29,10 @@ class Spot:
     def __str__(self):
         return f'[{self.i},{self.j}] '
 
-
-width = 400
-height = 400
-cols = 25
-rows = 25
-
 grid = [[Spot(i, j) for j in range(cols)] for i in range(rows)]
-openSet = []
-closedSet = []
-# path = []
-start = None
-end = None
-
-
-def setup():
-    global w, h, start, end, openSet
-    size(width, height)
-
-    w = width//cols
-    h = height//rows
-    # for lis in grid:
-    #     for x in lis:
-    #         print(x, end="")
-    #     print()
-    start = grid[0][0]
-    start.g=0
-    start.f=0
-    end = grid[13][4]
-    openSet.append(start)
-
 
 def heuristic(a, b):
     return abs(a.i-b.i)+abs(a.j-b.j)
-
 
 def getneighbors(spot):
     adder = [(1, 0), (-1, 0), (0, 1), (0, -1)]
@@ -67,6 +46,26 @@ def getneighbors(spot):
             neighbors.append(grid[a][b])  # add wall
     return neighbors
 
+def setup():
+    global w, h, start, end, openSet
+    size(width, height)
+
+    w = width//cols
+    h = height//rows
+    # for lis in grid:
+    #     for x in lis:
+    #         print(x, end="")
+    #     print()
+    start = grid[0][0]
+    start.g = 0
+    start.f = 0
+    end = grid[13][4]
+    openSet.append(start)
+
+    background(0)
+    for each_row in grid:
+        for spot in each_row:
+            spot.show(Color(255))
 
 def draw():
     global openSet, closedSet, grid
@@ -125,11 +124,12 @@ def draw():
             # neighbor[i].prev = current
 
     # ..................................
-    background(0)
+    
+    # background(0)
 
-    for rows in grid:
-        for spot in rows:
-            spot.show(Color(255))
+    # for each_row in grid:
+    #     for spot in each_row:
+    #         spot.show(Color(255))
 
     for spot in closedSet:
         spot.show(Color(255, 0, 0))
@@ -138,7 +138,7 @@ def draw():
         spot.show(Color(0, 255, 0))
 
     end.show((Color(121, 123, 255)))
-    if current!=None:
+    if current != None:
         temp = current
         path = [temp]
         while temp.prev != None:
