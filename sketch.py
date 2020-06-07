@@ -162,7 +162,7 @@ def draw():
     # for spot in openSet:
     #     spot.show(Color(0, 255, 0))
 
-    end.show((Color(121, 123, 255)))
+    end.show((Color(255, 0, 200)))
     if current != None:
         temp = current
         path = [temp]
