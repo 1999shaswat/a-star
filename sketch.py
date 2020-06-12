@@ -9,9 +9,11 @@ rows = 25
 
 openSet = []
 closedSet = []
-# path = []
+
 start = None
 end = None
+
+mode = None  # possible s e w r
 
 
 class Spot:
@@ -22,8 +24,6 @@ class Spot:
         self.j = j
         self.prev = None
         self.wall = False
-        if random.random() < 0.3:
-            self.wall = True
 
     def show(self, col):
         fill(col)
@@ -33,8 +33,7 @@ class Spot:
         if self.wall:
             rect((self.j*h, self.i*w), w-1, h-1)
         else:
-            circle((self.j*h+h/2, self.i*w+w/2),h/2+6,CENTER)
-        # rect((self.j*h, self.i*w), w-1, h-1)
+            circle((self.j*h+h/2, self.i*w+w/2), h/2+6, CENTER)
 
     def __str__(self):
         return f'[{self.i},{self.j}] '
@@ -67,102 +66,85 @@ def setup():
 
     w = width//cols
     h = height//rows
-    # for lis in grid:
-    #     for x in lis:
-    #         print(x, end="")
-    #     print()
-    start = grid[0][0]
-    end = grid[13][4]
-    start.wall=False
-    end.wall=False
-    
-    start.g = 0
-    start.f = 0
 
 
-    openSet.append(start)
-
-    # background(0)
-    # for each_row in grid:
-    #     for spot in each_row:
-    #         spot.show(Color(255))
+start = end = current = None
+path = []
 
 
 def draw():
-    global openSet, closedSet, grid
-    # if len(openSet) > 0:
-    #     # keep going
-    #     pass
-    # else:
-    #     #  no soln
-    #     pass
-    # ..................................
-    # current=None
-    if len(openSet) > 0:
-        # print("while")
-        current = min(openSet, key=lambda node: node.f)
-        # print("curr:",current)
+    global openSet, closedSet, grid, start, end, current, path
 
-        if current == end:
-            no_loop()
-            print("DONE")
-            return
+    if mode == 's':
+        if mouse_is_pressed:
+            i = floor(mouse_x/w)
+            j = floor(mouse_y/h)
+            try:
+                start = grid[j][i]
+                start.wall = False
+                start.g = 0
+                start.f = 0
+                openSet = [start]
+            except:
+                pass
+
+    elif mode == 'e':
+        if mouse_is_pressed:
+            i = floor(mouse_x/w)
+            j = floor(mouse_y/h)
+            try:
+                end = grid[j][i]
+                end.wall = False
+            except:
+                pass
+
+    elif mode == 'w':
+        if mouse_is_pressed:
+            i = floor(mouse_x/w)
+            j = floor(mouse_y/h)
+            try:
+                grid[j][i].wall = True
+            except:
+                pass
+
+    elif mode == 'r':
+        if len(openSet) > 0:
+            current = min(openSet, key=lambda node: node.f)
+            if current == end:
+                no_loop()
+                print("DONE")
+                return
+            else:
+                openSet.remove(current)
+                closedSet.append(current)
+                neighbor = getneighbors(current)
+                for i in range(len(neighbor)):
+                    if neighbor[i] in closedSet:
+                        continue
+
+                    tempG = current.g+1
+
+                    if tempG < neighbor[i].g:
+                        neighbor[i].prev = current
+                        neighbor[i].g = tempG
+                        neighbor[i].f = neighbor[i].g + \
+                            heuristic(neighbor[i], end)
+                        if neighbor[i] not in openSet:
+                            openSet.append(neighbor[i])
+
         else:
-            openSet.remove(current)
-            closedSet.append(current)
-            neighbor = getneighbors(current)
-
-            # print("neighbor:",end=" ")
-            # for spots in neighbor:
-            #     print(spots,end=" ")
-            # print()
-
-            for i in range(len(neighbor)):
-                # print("n",neighbor[i].i,neighbor[i].j)
-                if neighbor[i] in closedSet:
-                    continue
-                    # print("continue")
-                tempG = current.g+1
-                # print(f"tg{tempG} ng{neighbor[i].g}")
-                if tempG < neighbor[i].g:
-                    # print("if1")
-                    neighbor[i].prev = current
-                    neighbor[i].g = tempG
-                    neighbor[i].f = neighbor[i].g + heuristic(neighbor[i], end)
-                    if neighbor[i] not in openSet:
-                        openSet.append(neighbor[i])
-
-            # if neighbor[i] in openSet:
-            #     if tempG < neighbor[i].g:
-            #         neighbor[i].g = tempG
-            #         neighbor[i].f = neighbor[i].g+heuristic(neighbor[i], end)
-            #         neighbor[i].prev = current
-            # else:
-            #     neighbor[i].g = tempG
-            #     neighbor[i].f = neighbor[i].g+heuristic(neighbor[i], end)
-            #     neighbor[i].prev = current
-            #     openSet.append(neighbor[i])
-            # neighbor[i].f = neighbor[i].g+heuristic(neighbor[i], end)
-            # neighbor[i].prev = current
-    else:
-        print("NO Solution")
-        no_loop()
-        return
-    # ..................................
-
-    # background(0)
+            print("NO Solution")
+            no_loop()
+            return
 
     for each_row in grid:
         for spot in each_row:
             spot.show(Color(255))
-    # begin_shape()
-    # for spot in closedSet:
-    #     spot.show(Color(255, 0, 0))
-    # end_shape()
-    # for spot in openSet:
-    #     spot.show(Color(0, 255, 0))
+    if start != None:
+        start.show(Color(0, 0, 255))
+    if end != None:
+        end.show(Color(255, 0, 200))
 
-    end.show((Color(255, 0, 200)))
     if current != None:
         temp = current
         path = [temp]
@@ -172,6 +154,12 @@ def draw():
 
     for spot in path:
         spot.show(Color(0, 0, 255))
+
+
+def key_pressed():
+    global mode
+    if mode != 'r':
+        mode = str(key)
 
 
 if __name__ == '__main__':
