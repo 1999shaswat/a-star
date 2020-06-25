@@ -119,7 +119,7 @@ def draw():
         if len(openSet) > 0:
             current = min(openSet, key=lambda node: node.f)
             if current == end:
-                msg = "DONE"
+                msg = "Done"
                 mode = "d"
                 no_loop()
                 return
@@ -142,7 +142,7 @@ def draw():
                             openSet.append(neighbor[i])
 
         else:
-            msg = "NO Solution"
+            msg = "No Solution"
             mode = "d"
             no_loop()
             return
