@@ -165,7 +165,10 @@ def draw():
     for spot in path:
         spot.show(Color(0, 0, 255))
     background(200)
-    fill(0)
+    fill(49,54,59)
+    rect((0,400),400,20)
+    fill(28,240,154)
+    no_stroke()
     text(msg, (0, 400))
 
 
