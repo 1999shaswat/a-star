@@ -4,9 +4,10 @@ w = 0
 h = 0
 width = 400
 height = 400
+fontsize = 20
 cols = 25
 rows = 25
-
+msg = "S:Start E:End W:Walls R:Run"
 openSet = []
 closedSet = []
 
@@ -62,10 +63,14 @@ def getneighbors(spot):
 
 def setup():
     global w, h, start, end, openSet
-    size(width, height)
+    size(width, height+fontsize)
 
     w = width//cols
     h = height//rows
+
+    f = create_font("Arial.ttf", fontsize)
+    text_font(f)
+    text_align("LEFT")
 
 
 start = end = current = None
@@ -73,7 +78,10 @@ path = []
 
 
 def draw():
-    global openSet, closedSet, grid, start, end, current, path
+    global openSet, closedSet, grid, start, end, current, path, msg, mode
+    # text_size(30)
+    # if msg=="DONE" or msg=="NO Solution":
+    #     return
 
     if mode == 's':
         if mouse_is_pressed:
@@ -111,8 +119,9 @@ def draw():
         if len(openSet) > 0:
             current = min(openSet, key=lambda node: node.f)
             if current == end:
+                msg = "DONE"
+                mode = "d"
                 no_loop()
-                print("DONE")
                 return
             else:
                 openSet.remove(current)
@@ -133,7 +142,8 @@ def draw():
                             openSet.append(neighbor[i])
 
         else:
-            print("NO Solution")
+            msg = "NO Solution"
+            mode = "d"
             no_loop()
             return
 
@@ -154,12 +164,23 @@ def draw():
 
     for spot in path:
         spot.show(Color(0, 0, 255))
+    background(200)
+    fill(0)
+    text(msg, (0, 400))
 
 
 def key_pressed():
-    global mode
+    global mode, msg
     if mode != 'r':
         mode = str(key)
+        if mode == 's':
+            msg = "Start point"
+        elif mode == 'e':
+            msg = "End point"
+        elif mode == 'w':
+            msg = "Walls"
+        elif mode == 'r':
+            msg = "Running..."
 
 
 if __name__ == '__main__':
