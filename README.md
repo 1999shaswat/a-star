@@ -1,5 +1,5 @@
-# Visualizing a-star
-This project helps visualize the working of A-Star algorithm.
+# Visualizing A-Star
+This project demonstrates the working of A-Star algorithm.
 
 [Wiki Link for A-Star Algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm)
 
