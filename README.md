@@ -16,3 +16,5 @@ The script expects user to do the following steps in order.
 3. Select walls. (optional) (Press W on keyboard and click a box or click and hold and move cursor upon multiple boxes to select multiple walls)
 4. Run. (Press R on keyboard)
 
+## Demo
+![](demo.gif)
