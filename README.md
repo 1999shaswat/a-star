@@ -18,3 +18,5 @@ The script expects user to do the following steps in order.
 
 ## Demo
 ![](demo.gif)
+
+[ The path searching animation appears to be stuck in the gif but it doesn't get stuck, this happened apparently due to some bug in peek gif recorder. Sorry :( ]
