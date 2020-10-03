@@ -68,7 +68,7 @@ def setup():
     w = width//cols
     h = height//rows
 
-    f = create_font("Arial.ttf", fontsize)
+    f = create_font("arial.ttf", fontsize)
     text_font(f)
     text_align("LEFT")
 
