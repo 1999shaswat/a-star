@@ -6,7 +6,7 @@ This project demonstrates the working of A-Star algorithm.
 ## FAQ
 
 ### How to run this on my System?
-Since this uses python port of p5.js library, run `pip install p5` command in terminal to install p5.
+Since this uses python port of p5.js library, run `pip3 install p5==0.6.0` command in terminal to install p5.
 Then run the program.
 
 ### How to use it?
