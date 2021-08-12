@@ -14,6 +14,8 @@ closedSet = []
 start = None
 end = None
 
+# This is a new line
+
 mode = None  # possible s e w r
 
 
